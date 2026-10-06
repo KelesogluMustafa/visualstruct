@@ -1,0 +1,37 @@
+v: 1
+type: architecture
+title: SaveFold
+
+theme: technical-light
+responsive: true
+
+groups:
+  backend: Backend
+
+nodes:
+  web:
+    label: Web
+    tech: Vite
+    icon: monitor
+  api:
+    label: API
+    tech: Node.js
+    icon: server
+    group: backend
+  db:
+    label: Database
+    tech: MySQL
+    icon: database
+    group: backend
+  cache:
+    label: Cache
+    tech: Redis
+    icon: zap
+    group: backend
+
+flow:
+  - web>api>db
+  - "api>cache: sessions"
+
+output:
+  formats: [svg, png, html]

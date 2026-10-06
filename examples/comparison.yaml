@@ -1,0 +1,17 @@
+v: 1
+type: comparison
+title: Who draws the visual?
+subtitle: Token cost of producing one technical diagram
+theme: technical-light
+
+columns:
+  - { title: VisualStruct, icon: zap, highlight: true }
+  - { title: LLM-written SVG, icon: bot }
+
+rows:
+  - [What the model writes, A small semantic spec, Every path and coordinate]
+  - [Layout, Computed locally, Guessed by the model]
+  - [Consistent styling, true, false]
+  - [Deterministic output, true, false]
+  - [PNG and HTML export, true, false]
+  - [Needs a local install, true, false]

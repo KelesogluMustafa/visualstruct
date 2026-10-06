@@ -1,0 +1,42 @@
+{
+  "name": "visualstruct",
+  "version": "0.1.0",
+  "description": "Local visual compiler: small VisualSpec in, SVG/PNG/HTML out.",
+  "type": "module",
+  "license": "MIT",
+  "engines": {
+    "node": ">=22"
+  },
+  "bin": {
+    "visualstruct": "./dist/cli.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json && node -e \"fs.cpSync('src/templates','dist/templates',{recursive:true})\"",
+    "prepack": "npm run build",
+    "typecheck": "tsc --noEmit",
+    "visualstruct": "tsx src/cli.ts",
+    "render": "tsx src/cli.ts render",
+    "validate": "tsx src/cli.ts validate",
+    "doctor": "tsx src/cli.ts doctor",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@lucide/icons": "^1.52.0",
+    "@resvg/resvg-js": "^2.6.2",
+    "@svgdotjs/svg.js": "^3.2.8",
+    "eta": "^4.6.0",
+    "svgdom": "^0.1.29",
+    "svgo": "^4.1.0",
+    "yaml": "^2.9.1",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.4",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.3"
+  }
+}

@@ -1,0 +1,9 @@
+node_modules/
+dist/
+output/*
+!output/.gitkeep
+*.log
+*.tgz
+*.tmp
+.env
+.env.*
