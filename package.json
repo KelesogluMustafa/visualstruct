@@ -1,6 +1,6 @@
 {
   "name": "visualstruct",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Local visual compiler: small VisualSpec in, SVG/PNG/HTML out.",
   "type": "module",
   "license": "MIT",
@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "@lucide/icons": "^1.52.0",
+    "@modelcontextprotocol/sdk": "^1.32.1",
     "@resvg/resvg-js": "^2.6.2",
     "@svgdotjs/svg.js": "^3.2.8",
     "eta": "^4.6.0",

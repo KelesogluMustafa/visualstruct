@@ -14,6 +14,7 @@ Usage:
   visualstruct render <spec>      Render a VisualSpec to SVG/PNG/HTML
   visualstruct validate <spec>    Check a VisualSpec without rendering
   visualstruct doctor             Check the local environment
+  visualstruct mcp                Serve the visual_render tool over MCP (stdio)
 
 Options:
   --format <list>   Comma-separated formats: ${FORMATS.join(', ')}
@@ -109,6 +110,11 @@ async function main(argv: string[]): Promise<number> {
     }
     case 'doctor':
       return doctor(resolve(values.out ?? 'output'))
+    case 'mcp': {
+      const { runMcpServer } = await import('./mcp.js')
+      await runMcpServer()
+      return 0
+    }
     default:
       throw new VisualStructError('USAGE', `Unknown command "${command}"`, [USAGE])
   }
