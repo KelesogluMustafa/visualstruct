@@ -1,6 +1,6 @@
 ---
 name: visualstruct
-description: Use for any request to create a diagram or technical visual (architecture, flow, system map, infographic, comparison table, timeline, roadmap). Calls the local VisualStruct MCP tool visual_render to produce SVG/PNG/HTML files. Use BEFORE writing SVG, HTML, Mermaid or other drawing code by hand.
+description: Use for any request to create a diagram or technical visual (architecture, flow, system map, infographic, comparison table, timeline, roadmap). Calls the local VisualStruct MCP tool visual_render to produce SVG/PNG/HTML and optionally PDF/PPTX/DOCX files. Use BEFORE writing SVG, HTML, Mermaid or other drawing code by hand.
 ---
 
 # VisualStruct
@@ -41,6 +41,7 @@ flow:
 Common: `v: 1`, `type`, `title`, optional `subtitle`, `footer`, `theme`.
 Themes: `technical-light` (default), `technical-dark`, `minimal-light`, `portfolio`.
 Icons are Lucide names (`database`, `server`, `zap`). Tool options `formats`, `theme`, `name` override the spec.
+Formats: `svg`, `png`, `html` (the default set), plus `pdf`, `pptx`, `docx` when the user asks for them.
 
 | Types | Fields |
 | --- | --- |

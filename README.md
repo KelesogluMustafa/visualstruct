@@ -1,6 +1,7 @@
 # VisualStruct
 
-A local visual compiler: a small semantic `VisualSpec` (YAML/JSON) goes in, polished SVG / PNG / HTML comes out.
+A local visual compiler: a small semantic `VisualSpec` (YAML/JSON) goes in, polished SVG / PNG / HTML comes out,
+plus PDF / PPTX / DOCX on request.
 The model decides what the visual means; layout, icons, styling, optimization and export all happen locally.
 
 The goal is token efficiency with Claude: Claude writes only the compact spec — never SVG paths, coordinates,
@@ -33,6 +34,22 @@ npm run render -- examples/comparison.yaml --format svg,png --theme technical-da
 ```
 
 Each render writes `output/<name>.svg`, `.png` and `.html` and prints the file paths.
+
+### Output formats
+
+```bash
+npm run render -- examples/architecture.yaml --format pdf,pptx,docx
+npm run render -- examples/architecture.yaml --format all
+```
+
+| Format | What you get |
+| --- | --- |
+| `svg`, `png`, `html` | The default set: optimized SVG, 2x PNG, standalone responsive page |
+| `pdf` | Single-page vector PDF sized to the visual. Text is outlined, so it is not selectable |
+| `pptx` | One 16:9 slide with the visual centered, embedded as PNG |
+| `docx` | A4 page (landscape for wide visuals) with title, optional subtitle and the visual as PNG |
+
+Every format is exported from the same master SVG; nothing is rendered twice.
 
 ## VisualSpec
 

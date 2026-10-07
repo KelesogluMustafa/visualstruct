@@ -1,6 +1,6 @@
 # VisualStruct — Master Architecture
 
-**Status:** V0.1 core complete · V0.2 Claude Code integration implemented (see §15)  
+**Status:** V0.1 core complete · V0.2 Claude Code integration implemented (see §15) · V0.3 export formats (see §5)  
 **Primary goal:** Produce polished SVG/PNG/HTML visuals locally while sending Claude the smallest possible semantic specification.  
 **Priority:** Fast local setup, minimal moving parts, no Docker, no monorepo, no unnecessary frontend framework.
 
@@ -295,6 +295,23 @@ visual.yaml / visual.json
        │
        └──────────────────► SVG
 ```
+
+---
+
+### V0.3 export formats
+
+The optimized SVG stays the single master. Three more exporters hang off it; VisualSpec `v: 1` and the
+default format set (SVG, PNG, HTML) are unchanged.
+
+```text
+Optimized SVG
+   ├─ resvg flatten (CSS resolved, text outlined) ► pdfkit + svg-to-pdfkit ► vector PDF
+   └─ resvg-js ► PNG (rasterized once)
+                  ├─ pptxgenjs ► PPTX (one 16:9 slide)
+                  └─ docx      ► DOCX (title + visual on one A4 page)
+```
+
+Page size, orientation, slide ratio and margins are local defaults, not spec fields.
 
 ---
 
