@@ -29,9 +29,11 @@
     "render": "tsx src/cli.ts render",
     "validate": "tsx src/cli.ts validate",
     "doctor": "tsx src/cli.ts doctor",
+    "chatgpt:pack": "node scripts/chatgpt-plugin-pack.mjs",
+    "chatgpt:test": "npm run chatgpt:pack && vitest run tests/chatgpt-plugin.test.ts",
     "desktop:runtime": "node scripts/desktop-runtime.mjs",
     "desktop:pack": "node scripts/desktop-pack.mjs",
-    "test": "vitest run"
+    "test": "npm run chatgpt:pack && vitest run"
   },
   "dependencies": {
     "@lucide/icons": "^1.52.0",
@@ -51,6 +53,7 @@
   "devDependencies": {
     "@types/node": "^26.6.4",
     "@types/pdfkit": "^0.17.6",
+    "ajv": "^8.20.0",
     "jszip": "^3.10.2",
     "tsx": "^4.23.15",
     "typescript": "^7.0.2",

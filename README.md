@@ -178,6 +178,24 @@ The Claude Code plugin and the Desktop Extension are separate surfaces sharing t
 `SKILL.md`. An uploaded skill may also sync into Claude Code; if the skill then shows up twice there, keep
 only one of the two.
 
+## ChatGPT and Codex Desktop plugin
+
+VisualStruct also ships as one portable Agent Plugins 1.0 archive containing the existing VisualStruct
+Skill and a local MCP registration for the existing `visual_render` tool. The archive is a thin launcher:
+it does not bundle another renderer and never depends on this checkout or on `npm link`.
+
+First install the stable runtime with the existing installer, then build the archive:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\install.ps1 -Mode cli
+npm run chatgpt:pack
+```
+
+Upload `build/visualstruct-chatgpt-plugin.zip` from **Plugins → Add → Create plugin → Upload archive**.
+The local MCP resolves the matching installed runtime from
+`%USERPROFILE%\.local\visualstruct\v<version>`. Keep only this plugin enabled on OpenAI surfaces to avoid
+duplicate Skill or MCP registrations from another VisualStruct installation.
+
 ## Development
 
 ```bash
