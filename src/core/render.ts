@@ -1,13 +1,16 @@
 import { mkdir, writeFile } from 'node:fs/promises'
 import { basename, extname, join, resolve } from 'node:path'
-import { ensureViewBox } from '../design/responsive.js'
+import { ensureViewBox, readViewBox } from '../design/responsive.js'
 import { themes } from '../design/themes.js'
 import { renderWithD2 } from '../engines/d2.js'
 import { renderWithSvgJs } from '../engines/svgjs.js'
 import { resolveIcons } from '../icons/lucide.js'
+import { pngToDocx } from '../outputs/docx.js'
 import { svgToHtml } from '../outputs/html.js'
 import { optimizeSvg } from '../outputs/optimize-svg.js'
+import { svgToPdf } from '../outputs/pdf.js'
 import { svgToPng } from '../outputs/png.js'
+import { pngToPptx } from '../outputs/pptx.js'
 import { basicQa } from '../qa/basic.js'
 import { VisualStructError, type Format, type NormalizedSpec, type RenderResult, type ThemeName } from '../types.js'
 import { loadSpec } from './load-spec.js'
@@ -57,17 +60,24 @@ export async function renderSpec(input: unknown, options: RenderOptions = {}): P
 
   const outDir = resolve(options.outDir ?? spec.output.dir ?? 'output')
   const name = options.name ?? spec.output.name ?? 'visual'
-  const produce: Record<Format, () => string | Buffer> = {
+  // Every exporter works from the same master SVG; the PNG is rasterized at most once.
+  const size = readViewBox(svg) ?? { width: 1200, height: 800 }
+  let png: Buffer | undefined
+  const getPng = () => (png ??= svgToPng(svg))
+  const produce: Record<Format, () => string | Buffer | Promise<Buffer>> = {
     svg: () => svg,
-    png: () => svgToPng(svg),
+    png: getPng,
     html: () => svgToHtml(svg, { title: spec.title, theme, responsive: spec.responsive }),
+    pdf: () => svgToPdf(svg, { title: spec.title }),
+    pptx: () => pngToPptx(getPng(), { title: spec.title, ...size, background: theme.colors.bg }),
+    docx: () => pngToDocx(getPng(), { title: spec.title, subtitle: spec.subtitle, ...size }),
   }
 
   await mkdir(outDir, { recursive: true })
   const files: string[] = []
   for (const format of new Set(options.formats ?? spec.output.formats)) {
     const file = join(outDir, `${name}.${format}`)
-    await writeFile(file, produce[format]())
+    await writeFile(file, await produce[format]())
     files.push(file)
   }
   return { ok: true, engine, files, warnings }

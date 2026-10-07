@@ -6,7 +6,7 @@ import { loadSpec } from './core/load-spec.js'
 import { prepareSpec, renderFile } from './core/render.js'
 import { routeEngine } from './core/router.js'
 import { D2_INSTALL_HINT, findD2 } from './engines/d2.js'
-import { FORMATS, THEME_NAMES, VisualStructError, type Format, type ThemeName } from './types.js'
+import { DEFAULT_FORMATS, FORMATS, THEME_NAMES, VisualStructError, type Format, type ThemeName } from './types.js'
 
 const USAGE = `VisualStruct - local visual compiler
 
@@ -17,7 +17,8 @@ Usage:
   visualstruct mcp                Serve the visual_render tool over MCP (stdio)
 
 Options:
-  --format <list>   Comma-separated formats: ${FORMATS.join(', ')}
+  --format <list>   Comma-separated formats, or "all": ${FORMATS.join(', ')}
+                    (default: ${DEFAULT_FORMATS.join(', ')})
   --out <dir>       Output directory (default: ./output)
   --theme <name>    ${THEME_NAMES.join(' | ')}
   -h, --help        Show this help`
@@ -28,6 +29,7 @@ const display = (path: string) => relative(process.cwd(), path).replaceAll('\\',
 
 function parseFormats(value: string | undefined): Format[] | undefined {
   if (value === undefined) return undefined
+  if (value.trim() === 'all') return [...FORMATS]
   const formats = value.split(',').map((part) => part.trim()).filter(Boolean)
   const unknown = formats.filter((format) => !(FORMATS as readonly string[]).includes(format))
   if (!formats.length || unknown.length) {

@@ -1,7 +1,7 @@
 {
   "name": "visualstruct",
-  "version": "0.2.0",
-  "description": "Local visual compiler: small VisualSpec in, SVG/PNG/HTML out.",
+  "version": "0.3.0",
+  "description": "Local visual compiler: small VisualSpec in, SVG/PNG/HTML and PDF/PPTX/DOCX out.",
   "type": "module",
   "license": "MIT",
   "repository": {
@@ -36,7 +36,11 @@
     "@modelcontextprotocol/sdk": "^1.32.1",
     "@resvg/resvg-js": "^2.6.2",
     "@svgdotjs/svg.js": "^3.2.8",
+    "docx": "^9.9.0",
     "eta": "^4.6.0",
+    "pdfkit": "^0.20.2",
+    "pptxgenjs": "^4.0.1",
+    "svg-to-pdfkit": "^0.1.8",
     "svgdom": "^0.1.29",
     "svgo": "^4.1.0",
     "yaml": "^2.9.1",
@@ -44,8 +48,13 @@
   },
   "devDependencies": {
     "@types/node": "^26.6.4",
+    "@types/pdfkit": "^0.17.6",
+    "jszip": "^3.10.2",
     "tsx": "^4.23.15",
     "typescript": "^7.0.2",
     "vitest": "^5.0.3"
+  },
+  "overrides": {
+    "image-size": "^2.0.4"
   }
 }

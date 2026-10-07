@@ -1,7 +1,8 @@
 export const D2_TYPES = ['architecture', 'flow', 'system-map', 'data-flow', 'sequence'] as const
 export const SVGJS_TYPES = ['infographic', 'project-overview', 'stack', 'comparison', 'timeline', 'roadmap'] as const
 export const VISUAL_TYPES = [...D2_TYPES, ...SVGJS_TYPES] as const
-export const FORMATS = ['svg', 'png', 'html'] as const
+export const FORMATS = ['svg', 'png', 'html', 'pdf', 'pptx', 'docx'] as const
+export const DEFAULT_FORMATS = ['svg', 'png', 'html'] as const satisfies readonly (typeof FORMATS)[number][]
 export const THEME_NAMES = ['technical-light', 'technical-dark', 'minimal-light', 'portfolio'] as const
 
 export type VisualType = (typeof VISUAL_TYPES)[number]

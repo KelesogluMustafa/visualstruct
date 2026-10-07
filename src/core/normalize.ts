@@ -1,4 +1,4 @@
-import type { Edge, Node, NormalizedSpec, ThemeName } from '../types.js'
+import { DEFAULT_FORMATS, type Edge, type Node, type NormalizedSpec, type ThemeName } from '../types.js'
 import { parseFlow, type VisualSpecInput } from './schema.js'
 
 export const DEFAULT_THEME: ThemeName = 'technical-light'
@@ -59,7 +59,7 @@ export function normalize(input: VisualSpecInput, overrides: { theme?: ThemeName
       return { label, values: values.map((value) => (typeof value === 'number' ? String(value) : value)) }
     }),
     output: {
-      formats: [...new Set(input.output?.formats ?? (['svg', 'png', 'html'] as const))],
+      formats: [...new Set(input.output?.formats ?? DEFAULT_FORMATS)],
       dir: input.output?.dir,
       name: input.output?.name,
     },
