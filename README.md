@@ -13,6 +13,8 @@ Architecture and scope: [VISUALSTRUCT_MASTER_ARCHITECTURE.md](VISUALSTRUCT_MASTE
 Requires Node.js 22+. Diagram types also need the [D2](https://d2lang.com) executable:
 
 ```bash
+git clone https://github.com/KelesogluMustafa/visualstruct.git
+cd visualstruct
 npm ci
 winget install Terrastruct.D2
 npm run doctor
@@ -77,7 +79,7 @@ Use **one** of the two modes. Running both registers the skill and the tool twic
 **Plugin mode** (skill + MCP as one unit):
 
 ```bash
-claude plugin marketplace add <path-or-github-repo-of-this-repository>
+claude plugin marketplace add KelesogluMustafa/visualstruct
 claude plugin install visualstruct@visualstruct --scope user
 claude plugin disable visualstruct@visualstruct
 claude plugin enable visualstruct@visualstruct
@@ -110,3 +112,7 @@ npm test
 npm run typecheck
 npm run build
 ```
+
+## License
+
+[MIT](LICENSE)
