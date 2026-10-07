@@ -58,6 +58,51 @@ Common fields: `title`, `subtitle`, `footer`, `theme`, `responsive`, `output: { 
 Themes: `technical-light` (default), `technical-dark`, `minimal-light`, `portfolio`.
 Icons are [Lucide](https://lucide.dev/icons) names. See [examples/](examples).
 
+## Claude Code integration
+
+Install the core once per machine; other projects never copy this repository.
+
+```bash
+npm ci
+npm run build
+npm link
+```
+
+`npm link` puts the `visualstruct` command on PATH. `visualstruct mcp` serves one MCP tool,
+`visual_render`, which takes a spec (`spec` inline or `spec_path`) plus optional `out_dir`, `name`,
+`formats`, `theme`, `validate_only`, and returns file paths and warnings only, never file contents.
+
+Use **one** of the two modes. Running both registers the skill and the tool twice.
+
+**Plugin mode** (skill + MCP as one unit):
+
+```bash
+claude plugin marketplace add <path-or-github-repo-of-this-repository>
+claude plugin install visualstruct@visualstruct --scope user
+claude plugin disable visualstruct@visualstruct
+claude plugin enable visualstruct@visualstruct
+```
+
+Disabling the plugin removes both the skill and the MCP server. To switch off only the MCP server,
+use `/mcp` inside Claude Code.
+
+**Manual mode** (skill and MCP toggled separately, run from PowerShell):
+
+```powershell
+claude mcp add -s user visualstruct -- cmd /c visualstruct mcp
+Copy-Item -Recurse plugin\skills\visualstruct $env:USERPROFILE\.claude\skills\visualstruct
+```
+
+- MCP off: `claude mcp remove -s user visualstruct`, or disable it per project in `/mcp`.
+- Skill off: delete `~/.claude/skills/visualstruct`.
+- Skill manual-only: add `disable-model-invocation: true` to the copied `SKILL.md` front matter, then
+  call it with `/visualstruct`.
+
+On macOS/Linux the manual registration is `claude mcp add -s user visualstruct -- visualstruct mcp`.
+
+In any project, ask Claude for a diagram; outputs are written to that project (`out_dir`).
+[plugin/skills/visualstruct/SKILL.md](plugin/skills/visualstruct/SKILL.md) is the single source of the skill.
+
 ## Development
 
 ```bash

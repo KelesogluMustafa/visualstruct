@@ -1,0 +1,17 @@
+{
+  "name": "visualstruct",
+  "version": "0.2.0",
+  "description": "Render diagrams and infographics locally from a small VisualSpec. Bundles the VisualStruct skill and MCP registration; requires the visualstruct CLI on PATH.",
+  "author": {
+    "name": "VisualStruct contributors"
+  },
+  "license": "MIT",
+  "mcpServers": {
+    "visualstruct": {
+      "command": "node",
+      "args": [
+        "${CLAUDE_PLUGIN_ROOT}/mcp-launcher.mjs"
+      ]
+    }
+  }
+}

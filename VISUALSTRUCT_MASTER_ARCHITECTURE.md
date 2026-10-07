@@ -1,6 +1,6 @@
 # VisualStruct — Master Architecture
 
-**Status:** V0.1 architecture baseline  
+**Status:** V0.1 core complete · V0.2 Claude Code integration implemented (see §15)  
 **Primary goal:** Produce polished SVG/PNG/HTML visuals locally while sending Claude the smallest possible semantic specification.  
 **Priority:** Fast local setup, minimal moving parts, no Docker, no monorepo, no unnecessary frontend framework.
 
@@ -708,18 +708,32 @@ Only after V0.1 is stable:
            SVG          PNG          HTML
 ```
 
-### MCP V0.2/V0.3
+### As implemented in V0.2
+
+```text
+src/mcp.ts                              thin stdio adapter (official MCP SDK), started by `visualstruct mcp`
+plugin/skills/visualstruct/SKILL.md     the single source of the skill
+plugin/.claude-plugin/plugin.json       optional bundle: skill + MCP registration
+plugin/mcp-launcher.mjs                 starts the installed core; the plugin ships no render code
+.claude-plugin/marketplace.json         lets this repository be added as a plugin marketplace
+```
+
+The MCP surface is one tool, `visual_render`. The other planned tools were folded away to save context:
+validation is its `validate_only` flag, the type/field reference lives in the skill, and a preview is
+just reading the returned PNG path when QA is actually needed.
+
+The core is installed once per machine and reached through the `visualstruct` command on PATH.
+Use either manual mode (user-scope MCP + user skill) or plugin mode, never both at once.
+
+### MCP
 
 Keep the MCP surface tiny:
 
 ```text
 visual_render
-visual_validate
-visual_templates
-visual_preview
 ```
 
-MCP responses return metadata and file paths, **never the entire SVG source** unless explicitly requested.
+MCP responses return metadata and file paths, **never** SVG, HTML or PNG content.
 
 Example response:
 

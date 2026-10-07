@@ -1,0 +1,16 @@
+{
+  "name": "visualstruct",
+  "owner": {
+    "name": "VisualStruct contributors"
+  },
+  "metadata": {
+    "description": "VisualStruct: local visual compiler for Claude Code."
+  },
+  "plugins": [
+    {
+      "name": "visualstruct",
+      "source": "./plugin",
+      "description": "Render diagrams and infographics locally from a small VisualSpec."
+    }
+  ]
+}
