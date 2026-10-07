@@ -9,6 +9,38 @@ CSS or HTML — and gets file paths back, not the generated markup.
 
 Architecture and scope: [VISUALSTRUCT_MASTER_ARCHITECTURE.md](VISUALSTRUCT_MASTER_ARCHITECTURE.md).
 
+## Quick install on Windows
+
+Needs Node.js 22+ (and Claude Code for the `code` and `both` modes).
+
+```powershell
+git clone https://github.com/KelesogluMustafa/visualstruct.git
+cd visualstruct
+.\install.ps1 -Mode both
+```
+
+If PowerShell blocks scripts, run `powershell -ExecutionPolicy Bypass -File .\install.ps1 -Mode both`.
+
+| Mode | Installs |
+| --- | --- |
+| `cli` | Core + CLI |
+| `code` | Core + CLI + Claude Code plugin |
+| `desktop` | Core + CLI + Claude Desktop packages |
+| `both` | All of the above |
+
+The core goes to `%USERPROFILE%\.local\visualstruct\v<version>` and the `visualstruct` command to
+`%USERPROFILE%\.local\bin` (added to your user PATH; open a new terminal afterwards). Nothing depends on the
+checkout or on `npm link`, and re-running the installer is safe. For Claude Desktop it prints two files to
+install by hand. D2 is only checked, never installed for you: `winget install Terrastruct.D2`.
+
+**Uninstall**
+
+- Core and CLI: delete `%USERPROFILE%\.local\visualstruct` and `%USERPROFILE%\.local\bin\visualstruct.cmd`.
+- Claude Code: `claude plugin uninstall visualstruct@visualstruct`, then `claude plugin marketplace remove visualstruct`.
+- Claude Desktop: remove the extension under Settings → Extensions and the skill under Settings → Capabilities.
+
+The sections below describe the same setup step by step.
+
 ## Setup
 
 Requires Node.js 22+. Diagram types also need the [D2](https://d2lang.com) executable:
