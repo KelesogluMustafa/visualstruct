@@ -36,6 +36,7 @@ assert(validateMcp(mcp), `mcp.json does not match the official schema: ${ajv.err
 assert(manifest.$schema === pluginSchema, 'plugin.json must target Agent Plugins 1.0.0')
 assert(/^(?!.*(?:--|\.\.))[a-z0-9](?:[a-z0-9.-]*[a-z0-9])?$/.test(manifest.name), 'plugin name is invalid')
 assert(/^\d+\.\d+\.\d+$/.test(manifest.version), 'plugin version must be strict semver')
+assert(manifest.version === corePackage.version, `plugin version must match package.json (${corePackage.version}), since the launcher targets that runtime`)
 assert(typeof manifest.description === 'string' && manifest.description.length > 0, 'plugin description is required')
 const interfaceMetadata = manifest.extensions?.['com.openai']?.interface
 assert(interfaceMetadata?.displayName === 'VisualStruct', 'OpenAI displayName must be VisualStruct')

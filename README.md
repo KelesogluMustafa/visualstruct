@@ -184,14 +184,14 @@ VisualStruct also ships as one portable Agent Plugins 1.0 archive containing the
 Skill and a local MCP registration for the existing `visual_render` tool. The archive is a thin launcher:
 it does not bundle another renderer and never depends on this checkout or on `npm link`.
 
-First install the stable runtime with the existing installer, then build the archive:
+The plugin needs the stable VisualStruct runtime of the same version, so install that first:
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\install.ps1 -Mode cli
-npm run chatgpt:pack
 ```
 
-Upload `build/visualstruct-chatgpt-plugin.zip` from **Plugins → Add → Create plugin → Upload archive**.
+Then upload `visualstruct-chatgpt-plugin.zip` from **Plugins → Add → Upload plugin archive**. The ZIP attached
+to each GitHub release can be uploaded as is; `npm run chatgpt:pack` builds the same file into `build/`.
 The local MCP resolves the matching installed runtime from
 `%USERPROFILE%\.local\visualstruct\v<version>`. Keep only this plugin enabled on OpenAI surfaces to avoid
 duplicate Skill or MCP registrations from another VisualStruct installation.

@@ -1,3 +1,4 @@
+import { spawnSync } from 'node:child_process'
 import { existsSync, realpathSync } from 'node:fs'
 import { mkdtemp, readFile, rm, stat, writeFile } from 'node:fs/promises'
 import { homedir, tmpdir } from 'node:os'
@@ -60,8 +61,24 @@ describe('ChatGPT/Codex plugin package', () => {
     expect(launcher).toContain(`const runtimeVersion = '${corePackage.version}'`)
     expect(launcher).toContain("join(homedir(), '.local', 'visualstruct', `v${runtimeVersion}`)")
     expect(launcher).not.toMatch(/C:\\Users\\|Projects[\\/]|npm link/i)
-    expect(realpathSync(join(runtime, 'node_modules', 'visualstruct')).toLowerCase().startsWith(runtime.toLowerCase())).toBe(true)
-    expect(realpathSync(join(runtime, 'node_modules', 'visualstruct')).toLowerCase().startsWith(repo.toLowerCase())).toBe(false)
+  })
+
+  it('exits with a clear message when the matching runtime is not installed', async () => {
+    // An empty profile stands in for a machine where the runtime was never installed.
+    const emptyHome = await mkdtemp(join(tmpdir(), 'visualstruct-no-runtime-'))
+    try {
+      const launcherPath = join(emptyHome, 'runtime-launch.mjs')
+      await writeFile(launcherPath, await zip.file('visualstruct/runtime-launch.mjs')!.async('nodebuffer'))
+      const result = spawnSync(process.execPath, [launcherPath], {
+        encoding: 'utf8',
+        env: { ...process.env, USERPROFILE: emptyHome, HOME: emptyHome },
+      })
+      expect(result.status).toBe(1)
+      expect(result.stdout).toBe('') // stdout stays reserved for the MCP protocol
+      expect(result.stderr).toContain(`VisualStruct stable runtime v${corePackage.version} was not found`)
+    } finally {
+      await rm(emptyHome, { recursive: true, force: true })
+    }
   })
 })
 
@@ -100,6 +117,12 @@ describe.skipIf(!existsSync(join(runtime, 'desktop-launch.mjs')))('ChatGPT/Codex
   afterAll(async () => {
     await client?.close()
     await rm(temp, { recursive: true, force: true })
+  })
+
+  it('uses a real install that does not point back at the development checkout', () => {
+    const installed = realpathSync(join(runtime, 'node_modules', 'visualstruct')).toLowerCase()
+    expect(installed.startsWith(runtime.toLowerCase())).toBe(true)
+    expect(installed.startsWith(repo.toLowerCase())).toBe(false)
   })
 
   it('starts the installed runtime and exposes exactly one visual_render tool', async () => {
