@@ -1,0 +1,36 @@
+{
+  "manifest_version": "0.3",
+  "name": "visualstruct",
+  "display_name": "VisualStruct",
+  "version": "0.3.1",
+  "description": "Local visual compiler: renders a small VisualSpec to SVG, PNG, HTML, PDF, PPTX and DOCX files.",
+  "long_description": "VisualStruct renders diagrams and infographics on this computer from a compact semantic spec, and gives Claude only the resulting file paths instead of generated markup.\n\nThis extension is a launcher. It starts the VisualStruct v0.3.1 runtime that is already installed in your user profile (.local\\visualstruct\\v0.3.1). It does not bundle VisualStruct, needs no API key and sends nothing to a third-party service.\n\nRequires Node.js 22+ on PATH, and D2 for the diagram types. With no output folder given, files are written to Documents\\VisualStruct\\output.",
+  "author": {
+    "name": "KelesogluMustafa",
+    "url": "https://github.com/KelesogluMustafa"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/KelesogluMustafa/visualstruct"
+  },
+  "license": "MIT",
+  "keywords": ["diagram", "infographic", "svg", "pdf", "local"],
+  "server": {
+    "type": "binary",
+    "entry_point": "server/visualstruct-mcp.cmd",
+    "mcp_config": {
+      "command": "node",
+      "args": ["${HOME}${/}.local${/}visualstruct${/}v0.3.1${/}desktop-launch.mjs"],
+      "env": {}
+    }
+  },
+  "tools": [
+    {
+      "name": "visual_render",
+      "description": "Render a VisualSpec (YAML/JSON) to SVG/PNG/HTML/PDF/PPTX/DOCX files locally. Returns file paths and warnings only."
+    }
+  ],
+  "compatibility": {
+    "platforms": ["win32"]
+  }
+}

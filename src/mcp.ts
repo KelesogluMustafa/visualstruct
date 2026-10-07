@@ -68,7 +68,7 @@ export function createMcpServer(): McpServer {
     'visual_render',
     {
       description:
-        'Render a VisualSpec (YAML/JSON) to SVG/PNG/HTML files locally. Returns file paths and warnings only, never file contents.',
+        'Render a VisualSpec (YAML/JSON) to SVG/PNG/HTML/PDF/PPTX/DOCX files locally. Returns file paths and warnings only, never file contents.',
       inputSchema: visualRenderInput,
     },
     async (args) => {

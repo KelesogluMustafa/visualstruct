@@ -1,6 +1,6 @@
 {
   "name": "visualstruct",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Local visual compiler: small VisualSpec in, SVG/PNG/HTML and PDF/PPTX/DOCX out.",
   "type": "module",
   "license": "MIT",
@@ -29,6 +29,8 @@
     "render": "tsx src/cli.ts render",
     "validate": "tsx src/cli.ts validate",
     "doctor": "tsx src/cli.ts doctor",
+    "desktop:runtime": "node scripts/desktop-runtime.mjs",
+    "desktop:pack": "node scripts/desktop-pack.mjs",
     "test": "vitest run"
   },
   "dependencies": {

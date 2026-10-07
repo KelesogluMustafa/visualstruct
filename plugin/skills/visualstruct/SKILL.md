@@ -13,6 +13,7 @@ means; it does layout, icons, styling and export.
 1. Write the smallest valid VisualSpec and pass it inline to `visual_render` as `spec`.
 2. Never write SVG, HTML, CSS, coordinates or icon paths yourself.
 3. Pass `out_dir` as an absolute path inside the user's project (default: `<project>/output`).
+   With no project folder (Claude Desktop chat), omit `out_dir`: files go to `Documents/VisualStruct/output`.
 4. Report the returned file paths. Do not read the generated SVG or HTML back.
 5. Look at the PNG only if the user asks for a visual check or the result has warnings.
 6. On `ok: false`, fix the spec from `errors` and call again. Unknown keys are rejected.
