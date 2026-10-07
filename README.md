@@ -122,6 +122,30 @@ On macOS/Linux the manual registration is `claude mcp add -s user visualstruct -
 In any project, ask Claude for a diagram; outputs are written to that project (`out_dir`).
 [plugin/skills/visualstruct/SKILL.md](plugin/skills/visualstruct/SKILL.md) is the single source of the skill.
 
+## Claude Desktop (Windows)
+
+The Chat and Cowork tabs of the Claude desktop app use a Desktop Extension instead of the Claude Code plugin.
+The extension is only a launcher: it starts a versioned runtime installed in your user profile, so it does
+not need this checkout or `npm link` once installed.
+
+```bash
+npm ci
+npm run desktop:runtime
+npm run desktop:pack
+```
+
+- `desktop:runtime` installs `~/.local/visualstruct/v<version>/` from `npm pack` output. Re-running is safe;
+  other versions are kept.
+- `desktop:pack` writes `build/visualstruct-<version>.mcpb` and `build/visualstruct-skill.zip`.
+
+Then, in Claude Desktop: install the `.mcpb` under Settings → Extensions, and upload the skill zip under
+Settings → Capabilities → Skills. Node.js 22+ must be on PATH, and D2 is needed for the diagram types.
+With no `out_dir`, files are written to `Documents/VisualStruct/output`.
+
+The Claude Code plugin and the Desktop Extension are separate surfaces sharing the same core and the same
+`SKILL.md`. An uploaded skill may also sync into Claude Code; if the skill then shows up twice there, keep
+only one of the two.
+
 ## Development
 
 ```bash
