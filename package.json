@@ -1,6 +1,6 @@
 {
   "name": "visualstruct",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "Local visual compiler: small VisualSpec in, SVG/PNG/HTML and PDF/PPTX/DOCX out.",
   "type": "module",
   "license": "MIT",

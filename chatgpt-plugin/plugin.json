@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "visualstruct",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "Render diagrams and technical visuals locally with the installed VisualStruct runtime.",
   "author": {
     "name": "KelesogluMustafa",
