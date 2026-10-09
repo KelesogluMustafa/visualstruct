@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-  Installs VisualStruct on Windows from this checkout.
+  Installs VisualStruct on Windows from a checkout or from the release Setup ZIP.
 
 .DESCRIPTION
   cli      Core runtime + the "visualstruct" command
@@ -11,6 +11,9 @@
   The runtime is installed from "npm pack" output into
   %USERPROFILE%\.local\visualstruct\v<version>, so nothing depends on this
   checkout or on "npm link" afterwards. Re-running is safe.
+
+  In the release Setup ZIP the package (visualstruct-<version>.tgz) and the Claude
+  Desktop files are already next to this script, so no checkout and no build is needed.
 
 .EXAMPLE
   powershell -ExecutionPolicy Bypass -File .\install.ps1 -Mode both
@@ -30,6 +33,11 @@ Set-StrictMode -Version 2
 $env:npm_config_loglevel = 'error'
 
 $Repo = $PSScriptRoot
+# Release Setup ZIP: a prebuilt package sits next to this script and there is no package.json.
+$Bundle = $null
+if (-not (Test-Path (Join-Path $Repo 'package.json'))) {
+  $Bundle = Get-ChildItem -Path $Repo -Filter 'visualstruct-*.tgz' -ErrorAction SilentlyContinue | Select-Object -First 1
+}
 $Marketplace = 'KelesogluMustafa/visualstruct'
 $PluginId = 'visualstruct@visualstruct'
 
@@ -105,7 +113,7 @@ function Find-D2 {
 
 Step 'Checking prerequisites'
 if ($env:OS -ne 'Windows_NT') { Fail 'This installer is for Windows. On other systems see the manual steps in README.md.' }
-if (-not (Test-Path (Join-Path $Repo 'package.json'))) { Fail "package.json not found next to install.ps1 ($Repo)." }
+if (-not $Bundle -and -not (Test-Path (Join-Path $Repo 'package.json'))) { Fail "Neither package.json nor visualstruct-<version>.tgz found next to install.ps1 ($Repo)." }
 
 $node = Get-Command node -ErrorAction SilentlyContinue
 if (-not $node) { Fail "Node.js 22+ is required.`n  Install: https://nodejs.org/  or  winget install OpenJS.NodeJS.LTS" }
@@ -118,7 +126,11 @@ if ($WantCode) {
 }
 Done "OK (Node $nodeVersion)"
 
-$Version = (Get-Content (Join-Path $Repo 'package.json') -Raw | ConvertFrom-Json).version
+if ($Bundle) {
+  $Version = $Bundle.BaseName -replace '^visualstruct-', ''
+} else {
+  $Version = (Get-Content (Join-Path $Repo 'package.json') -Raw | ConvertFrom-Json).version
+}
 $Runtime = Join-Path $env:USERPROFILE ".local\visualstruct\v$Version"
 $RuntimePackage = Join-Path $Runtime 'node_modules\visualstruct\package.json'
 $RuntimeCli = Join-Path $Runtime 'node_modules\visualstruct\dist\cli.js'
@@ -134,6 +146,18 @@ Push-Location $Repo
 try {
   if ($installed -and -not $Force) {
     Done 'Already installed'
+  } elseif ($Bundle) {
+    New-Item -ItemType Directory -Force -Path $Runtime | Out-Null
+    $runtimeManifest = Join-Path $Runtime 'package.json'
+    if (-not (Test-Path $runtimeManifest)) { Copy-Item (Join-Path $Repo 'runtime-package.json') $runtimeManifest }
+    Push-Location $Runtime
+    try {
+      Invoke-Native 'Runtime install' 'npm.cmd' @('install', $Bundle.FullName, '--omit=dev', '--no-audit', '--no-fund')
+    } finally {
+      Pop-Location
+    }
+    Copy-Item (Join-Path $Repo 'runtime-launch.mjs') (Join-Path $Runtime 'desktop-launch.mjs') -Force
+    Done
   } else {
     if ($Force -or -not (Test-Path (Join-Path $Repo 'node_modules'))) {
       Invoke-Native 'npm ci' 'npm.cmd' @('ci', '--no-audit', '--no-fund')
@@ -216,7 +240,15 @@ if ($WantCode) {
 
 $Mcpb = Join-Path $Repo "build\visualstruct-$Version.mcpb"
 $SkillZip = Join-Path $Repo 'build\visualstruct-skill.zip'
-if ($WantDesktop) {
+if ($Bundle) {
+  $Mcpb = Join-Path $Repo "visualstruct-$Version.mcpb"
+  $SkillZip = Join-Path $Repo 'visualstruct-skill.zip'
+}
+if ($WantDesktop -and $Bundle) {
+  Step 'Locating Claude Desktop packages'
+  if (-not ((Test-Path $Mcpb) -and (Test-Path $SkillZip))) { Fail 'Desktop packages are missing from the Setup folder.' }
+  Done
+} elseif ($WantDesktop) {
   Step 'Building Claude Desktop packages'
   Push-Location $Repo
   try {

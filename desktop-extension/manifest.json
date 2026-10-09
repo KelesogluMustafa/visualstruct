@@ -2,9 +2,9 @@
   "manifest_version": "0.3",
   "name": "visualstruct",
   "display_name": "VisualStruct",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "description": "Local visual compiler: renders a small VisualSpec to SVG, PNG, HTML, PDF, PPTX and DOCX files.",
-  "long_description": "VisualStruct renders diagrams and infographics on this computer from a compact semantic spec, and gives Claude only the resulting file paths instead of generated markup.\n\nThis extension is a launcher. It starts the VisualStruct v0.3.3 runtime that is already installed in your user profile (.local\\visualstruct\\v0.3.3). It does not bundle VisualStruct, needs no API key and sends nothing to a third-party service.\n\nRequires Node.js 22+ on PATH, and D2 for the diagram types. With no output folder given, files are written to Documents\\VisualStruct\\output.",
+  "long_description": "VisualStruct renders diagrams and infographics on this computer from a compact semantic spec, and gives Claude only the resulting file paths instead of generated markup.\n\nThis extension is a launcher. It starts the VisualStruct v0.3.4 runtime that is already installed in your user profile (.local\\visualstruct\\v0.3.4). It does not bundle VisualStruct, needs no API key and sends nothing to a third-party service.\n\nRequires Node.js 22+ on PATH, and D2 for the diagram types. With no output folder given, files are written to Documents\\VisualStruct\\output.",
   "author": {
     "name": "KelesogluMustafa",
     "url": "https://github.com/KelesogluMustafa"
@@ -20,7 +20,7 @@
     "entry_point": "server/visualstruct-mcp.cmd",
     "mcp_config": {
       "command": "node",
-      "args": ["${HOME}${/}.local${/}visualstruct${/}v0.3.3${/}desktop-launch.mjs"],
+      "args": ["${HOME}${/}.local${/}visualstruct${/}v0.3.4${/}desktop-launch.mjs"],
       "env": {}
     }
   },
